@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - DATABASE_URL=postgresql://flowforge_prod_admin:${DATABASE_PASS}@postgres_prod:5432/flowforge_prod_db
+    depends_on:
+      - postgres_prod
+
+  postgres_prod:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=flowforge_prod_admin
+      - POSTGRES_PASSWORD=${DATABASE_PASS}
+      - POSTGRES_DB=flowforge_prod_db
+    volumes:
+      - prod_pgdata:/var/lib/postgresql/data
+
+volumes:
+  prod_pgdata:

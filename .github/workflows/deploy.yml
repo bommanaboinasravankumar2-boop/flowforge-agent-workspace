@@ -1,0 +1,33 @@
+name: FlowForge AI CI/CD pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository source
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js runtime environment
+      uses: actions/setup-node@v4
+      with:
+        node-size: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run code linter
+      run: npm run lint
+
+    - name: Build production app compilation
+      run: npm run build
+      env:
+        NODE_ENV: production
+        GEMINI_API_KEY: "mock_key_for_compilation"

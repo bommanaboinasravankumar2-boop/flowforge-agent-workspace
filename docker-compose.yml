@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # Fullstack Express + React application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - DATABASE_URL=postgresql://flowforge_admin:forge_secure_pass_902@postgres:5432/flowforge_db
+    depends_on:
+      - postgres
+
+  # PostgreSQL persistent storage
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=flowforge_admin
+      - POSTGRES_PASSWORD=forge_secure_pass_902
+      - POSTGRES_DB=flowforge_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

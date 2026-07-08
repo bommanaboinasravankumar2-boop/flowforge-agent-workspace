@@ -1,0 +1,6 @@
+{
+  "name": "FlowForge AI",
+  "description": "An AI-first visual workflow automation platform to create, run, and optimize workflows with dynamic execution and Gemini integrations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
