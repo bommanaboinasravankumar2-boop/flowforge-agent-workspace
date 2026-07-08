@@ -11,7 +11,6 @@ RUN npm ci
 
 # Copy all source files
 COPY src/ ./src/
-COPY public/ ./public/
 COPY metadata.json index.html ./
 
 # Build production Vite app and bundle Node server via esbuild
