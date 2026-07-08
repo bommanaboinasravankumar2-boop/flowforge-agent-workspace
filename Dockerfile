@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 COPY package*.json tsconfig.json vite.config.ts server.ts ./
 
 # Install dependencies including dev dependencies to build client
-RUN npm ci
+RUN npm install
 
 # Copy all source files
 COPY src/ ./src/
@@ -26,7 +26,7 @@ COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/package*.json ./
 
 # Install only production dependencies
-RUN npm ci --only=production
+RUN npm install --omit=dev
 
 EXPOSE 3000
 
