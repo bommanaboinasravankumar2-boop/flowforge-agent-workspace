@@ -5,7 +5,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: './',
+    base: process.env.GITHUB_ACTIONS ? '/flowforge-agent-workspace/' : './',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
