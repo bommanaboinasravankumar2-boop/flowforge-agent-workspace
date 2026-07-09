@@ -3,8 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { GoogleGenAI } from '@google/genai';
-
 // --- MOCK SEED DATA (MIRRORS SERVER.TS) ---
 
 const DEFAULT_PROVIDERS = [
