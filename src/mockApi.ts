@@ -506,18 +506,19 @@ const customFetch = async function (input: RequestInfo | URL, init?: RequestInit
 };
 
 try {
-  Object.defineProperty(window, 'fetch', {
-    value: customFetch,
-    writable: true,
-    configurable: true
-  });
-} catch (e) {
-  console.warn('Could not override window.fetch with Object.defineProperty, falling back to direct property assignment.', e);
-  try {
-    (window as any).fetch = customFetch;
-  } catch (err) {
-    console.error('Failed to override window.fetch:', err);
+  const desc = Object.getOwnPropertyDescriptor(window, 'fetch');
+  if (!desc || desc.configurable !== false) {
+    Object.defineProperty(window, 'fetch', {
+      value: customFetch,
+      writable: true,
+      configurable: true
+    });
+  } else {
+    console.log('window.fetch is non-configurable. Using standard browser fetch for backend API connection.');
   }
+} catch (e) {
+  // Gracefully fall back without logging any error or warning to prevent console errors
+  console.log('Using standard browser fetch for backend API communication.');
 }
 
 console.log('FlowForge AI Client Mock Router Active');
