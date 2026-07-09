@@ -1,5 +1,5 @@
 # Multi-stage production build for FlowForge AI
-FROM node:20-alpine AS builder
+FROM node:20-slim AS builder
 
 WORKDIR /usr/src/app
 
@@ -17,7 +17,7 @@ COPY metadata.json index.html ./
 RUN npm run build
 
 # Stage 2: Minimal runtime image
-FROM node:20-alpine AS runner
+FROM node:20-slim AS runner
 
 WORKDIR /usr/src/app
 
