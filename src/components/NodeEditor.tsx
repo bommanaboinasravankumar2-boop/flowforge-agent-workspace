@@ -7,6 +7,7 @@ import React from 'react';
 import { WorkflowNode, NodeDefinition } from '../types';
 import { NODE_DEFINITIONS } from '../data/nodeDefinitions';
 import * as Icons from 'lucide-react';
+import { apiFetch } from '../mockApi';
 
 interface NodeEditorProps {
   node: WorkflowNode | null;
@@ -18,7 +19,7 @@ export default function NodeEditor({ node, onUpdateProperties, onClose }: NodeEd
   const [providers, setProviders] = React.useState<any[]>([]);
 
   React.useEffect(() => {
-    fetch('/api/ai-providers')
+    apiFetch('/api/ai-providers')
       .then((res) => {
         if (res.ok) return res.json();
         return [];

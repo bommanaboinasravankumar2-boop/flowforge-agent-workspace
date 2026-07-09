@@ -16,6 +16,7 @@ import ExecutionPanel from './components/ExecutionPanel';
 import { getTranslation } from './components/LanguageLocalization';
 import { Workflow, WorkflowNode, WorkflowConnection, ExecutionLog } from './types';
 import * as Icons from 'lucide-react';
+import { apiFetch } from './mockApi';
 
 export default function App() {
   const [activeNav, setActiveNav] = useState<'canvas' | 'analytics' | 'admin' | 'marketplace' | 'ai_settings' | 'ai_agents'>('canvas');
@@ -88,7 +89,7 @@ export default function App() {
 
   const fetchWorkflows = async () => {
     try {
-      const res = await fetch('/api/workflows');
+      const res = await apiFetch('/api/workflows');
       if (res.ok) {
         const data = await res.json();
         setWorkflows(data);
@@ -104,7 +105,7 @@ export default function App() {
 
   const fetchLogs = async () => {
     try {
-      const res = await fetch('/api/logs');
+      const res = await apiFetch('/api/logs');
       if (res.ok) {
         const data = await res.json();
         setLogs(data);
@@ -116,7 +117,7 @@ export default function App() {
 
   const handleSaveWorkflow = async (wfToSave = currentWorkflow) => {
     try {
-      const res = await fetch('/api/workflows', {
+      const res = await apiFetch('/api/workflows', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(wfToSave),
@@ -142,7 +143,7 @@ export default function App() {
   const handleDeleteWorkflow = async (id: string) => {
     if (!id) return;
     try {
-      const res = await fetch(`/api/workflows/${id}`, { method: 'DELETE' });
+      const res = await apiFetch(`/api/workflows/${id}`, { method: 'DELETE' });
       if (res.ok) {
         setWorkflows((prev) => prev.filter((w) => w.id !== id));
         // Reset to empty or standard template
@@ -167,7 +168,7 @@ export default function App() {
   const handleGenerateWorkflowAI = async (prompt: string) => {
     setIsGeneratingAI(true);
     try {
-      const res = await fetch('/api/workflows/generate-ai', {
+      const res = await apiFetch('/api/workflows/generate-ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),

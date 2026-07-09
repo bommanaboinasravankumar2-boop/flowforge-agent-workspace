@@ -521,4 +521,6 @@ try {
   console.log('Using standard browser fetch for backend API communication.');
 }
 
+export const apiFetch = customFetch;
+
 console.log('FlowForge AI Client Mock Router Active');

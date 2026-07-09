@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import * as Icons from 'lucide-react';
 import { AIProvider, AIFallbackRule } from '../types';
+import { apiFetch } from '../mockApi';
 
 interface AISettingsPanelProps {
   onClose: () => void;
@@ -36,8 +37,8 @@ export default function AISettingsPanel({ onClose }: AISettingsPanelProps) {
     setLoading(true);
     try {
       const [provRes, ruleRes] = await Promise.all([
-        fetch('/api/ai-providers'),
-        fetch('/api/fallback-rules')
+        apiFetch('/api/ai-providers'),
+        apiFetch('/api/fallback-rules')
       ]);
       
       if (provRes.ok) {
@@ -62,7 +63,7 @@ export default function AISettingsPanel({ onClose }: AISettingsPanelProps) {
   // Save Provider
   const handleSaveProvider = async (prov: AIProvider) => {
     try {
-      const res = await fetch('/api/ai-providers', {
+      const res = await apiFetch('/api/ai-providers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(prov),
@@ -82,7 +83,7 @@ export default function AISettingsPanel({ onClose }: AISettingsPanelProps) {
   const handleTestConnection = async (prov: AIProvider) => {
     setTestingId(prov.id);
     try {
-      const res = await fetch('/api/ai-providers/test', {
+      const res = await apiFetch('/api/ai-providers/test', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ provider: prov }),
@@ -115,7 +116,7 @@ export default function AISettingsPanel({ onClose }: AISettingsPanelProps) {
   const handleDiscoverModels = async (prov: AIProvider) => {
     setDiscoveringId(prov.id);
     try {
-      const res = await fetch('/api/ai-providers/discover', {
+      const res = await apiFetch('/api/ai-providers/discover', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ provider: prov }),
@@ -149,7 +150,7 @@ export default function AISettingsPanel({ onClose }: AISettingsPanelProps) {
     setRules(updatedRules);
 
     try {
-      await fetch('/api/fallback-rules', {
+      await apiFetch('/api/fallback-rules', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedRules),
@@ -169,7 +170,7 @@ export default function AISettingsPanel({ onClose }: AISettingsPanelProps) {
     setRules(updatedRules);
 
     try {
-      await fetch('/api/fallback-rules', {
+      await apiFetch('/api/fallback-rules', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedRules),
@@ -195,7 +196,7 @@ export default function AISettingsPanel({ onClose }: AISettingsPanelProps) {
     };
 
     try {
-      const res = await fetch('/api/ai-providers', {
+      const res = await apiFetch('/api/ai-providers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newProv),
@@ -213,7 +214,7 @@ export default function AISettingsPanel({ onClose }: AISettingsPanelProps) {
   const handleDeleteProvider = async (id: string) => {
     if (!confirm('Are you sure you want to delete this custom provider?')) return;
     try {
-      const res = await fetch(`/api/ai-providers/${id}`, {
+      const res = await apiFetch(`/api/ai-providers/${id}`, {
         method: 'DELETE',
       });
       if (res.ok) {
